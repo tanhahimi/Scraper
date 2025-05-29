@@ -2,7 +2,7 @@ name: Daily Scrape and Upload
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # প্রতি দিন ভোর ৮টায় (বাংলাদেশ সময়)
+    - cron: '0 2 * * *'  # প্রতিদিন ভোর ৮টায় (বাংলাদেশ সময়)
   workflow_dispatch:
 
 jobs:
@@ -31,3 +31,4 @@ jobs:
         env:
           RCLONE_CONFIG_GDRIVE_TYPE: drive
           RCLONE_CONFIG_GDRIVE_TOKEN: ${{ secrets.GDRIVE_TOKEN }}
+
