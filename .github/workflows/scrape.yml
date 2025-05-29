@@ -20,36 +20,43 @@ jobs:
         
     - name: Install Dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt 
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt 
   
     - name: Install xvfb and unzip
-      run: sudo apt-get update && sudo apt-get install -y xvfb unzip
+      run: |
+          sudo apt-get install xvfb
+          sudo apt-get install unzip
 
     - name: Install Chrome
       run: |
-        wget -O chrome-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.119/linux64/chrome-linux64.zip
-        unzip chrome-linux64.zip
-        sudo mv -f chrome-linux64/chrome /usr/local/bin/
+          wget -O chrome-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.119/linux64/chrome-linux64.zip
+          unzip chrome-linux64.zip
+          sudo mv -f chrome-linux64/chrome /usr/local/bin/
           
     - name: Install ChromeDriver
       run: |
-        wget -O chromedriver-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.119/linux64/chromedriver-linux64.zip
-        unzip chromedriver-linux64.zip
-        sudo chmod +x chromedriver-linux64/chromedriver
-        sudo rm -f /usr/local/share/chromedriver/chromedriver
-        sudo mv -f chromedriver-linux64/chromedriver /usr/local/share/chromedriver
-        sudo rm -f /usr/bin/chromedriver
-        sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
+          wget -O chromedriver-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.119/linux64/chromedriver-linux64.zip
+          unzip chromedriver-linux64.zip
+          sudo chmod +x chromedriver-linux64/chromedriver
+          sudo rm -f /usr/local/share/chromedriver/chromedriver
+          sudo mv -f chromedriver-linux64/chromedriver /usr/local/share/chromedriver
+          sudo rm -f /usr/bin/chromedriver
+          sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
+
+    - name: Install Dependencies (again, just to be sure)
+      run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
     - name: Print Chrome and ChromeDriver versions
       run: |
         google-chrome --version
         chromedriver --version
       
-    - name: Run Web Scraping Second Script
-      run: python chal_dal_code.py
-
-    - name: Run Web Scraping Third Script
-      run: python main2.py 
-
+    - name: Run main2.py
+      run: python main2.py
+      
+    # Uncomment if merged_chal_dal_main1.py needed later
+    # - name: Merged chaldal datasets script-Second Script(main1.py)
+    #   run: python merged_chal_dal_main1.py
