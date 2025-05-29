@@ -3,7 +3,7 @@ name: Daily Scrape and Upload
 on:
   schedule:
     - cron: '0 2 * * *'  # প্রতিদিন ভোর ৮টায় (বাংলাদেশ সময়)
-  workflow_dispatch:
+  workflow_dispatch:       # ম্যানুয়ালি চালানো যাবে
 
 jobs:
   scrape:
@@ -24,10 +24,17 @@ jobs:
       - name: Run Scraper
         run: python scraper.py
 
+      - name: Install rclone (no sudo)
+        run: |
+          curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip
+          unzip -a rclone-current-linux-amd64.zip
+          cd rclone-*-linux-amd64
+          cp rclone ../rclone
+          cd ..
+
       - name: Upload to Google Drive
         run: |
-          curl https://rclone.org/install.sh | bash
-          rclone copy *.json gdrive:scraper-output -v
+          ./rclone copy *.json gdrive:scraper-output -v
         env:
           RCLONE_CONFIG_GDRIVE_TYPE: drive
           RCLONE_CONFIG_GDRIVE_TOKEN: ${{ secrets.GDRIVE_TOKEN }}
